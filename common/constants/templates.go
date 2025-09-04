@@ -1,0 +1,17 @@
+package constants
+
+// Template Types
+const (
+	TEMPLATE_TYPE_MEDICAL_REMARK   = "medical_remark"
+	TEMPLATE_TYPE_WITHHELD_REASON  = "withheld_reason"
+	TEMPLATE_TYPE_RERUN_REASON     = "rerun_reason"
+	TEMPLATE_TYPE_PERIPHERAL_SMEAR = "peripheral_smear"
+)
+
+// Template Types slice
+var TEMPLATE_TYPES = []string{
+	TEMPLATE_TYPE_MEDICAL_REMARK,
+	TEMPLATE_TYPE_WITHHELD_REASON,
+	TEMPLATE_TYPE_RERUN_REASON,
+	TEMPLATE_TYPE_PERIPHERAL_SMEAR,
+}

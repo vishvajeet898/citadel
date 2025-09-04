@@ -1,0 +1,178 @@
+# Ephemeral build workflow for testing and development
+
+name: Ephemeral ECR Push
+
+# Controls when the action will run. Triggers the workflow on push of ephemeral tags
+on:
+  push:
+    tags:
+      - v-eph-*
+
+jobs:
+  pre-commit-check:
+    name: Run pre-commit checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.3'
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Run pre-commit on changed files
+        run: pre-commit run --all-files
+
+  build-migrator:
+    runs-on: ubuntu-latest
+    needs: [pre-commit-check]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set Release Version
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_EPHEMERAL }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_EPHEMERAL }}
+        aws-region: ap-south-1
+    - name: Log in to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: Build, tag, and push migrator image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ephemeral-common
+        IMAGE_TAG: ${{ env.RELEASE_VERSION}}-citadel-migrate
+        DOCKER_FILE: dbmate.Dockerfile
+      run: |
+        docker build -f $DOCKER_FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Log out of Amazon ECR
+      if: always()
+      run: docker logout ${{ steps.login-ecr.outputs.registry }}
+
+  build-api:
+    runs-on: ubuntu-latest
+    needs: [pre-commit-check]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set Release Version
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_EPHEMERAL }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_EPHEMERAL }}
+        aws-region: ap-south-1
+    - name: Log in to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: Build, tag, and push api image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ephemeral-common
+        IMAGE_TAG: ${{ env.RELEASE_VERSION}}-citadel-api
+        DOCKER_FILE: Dockerfile
+      run: |
+        docker build -f $DOCKER_FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Log out of Amazon ECR
+      if: always()
+      run: docker logout ${{ steps.login-ecr.outputs.registry }}
+
+  build-worker:
+    runs-on: ubuntu-latest
+    needs: [pre-commit-check]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set Release Version
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_EPHEMERAL }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_EPHEMERAL }}
+        aws-region: ap-south-1
+    - name: Log in to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: Build, tag, and push worker image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ephemeral-common
+        IMAGE_TAG: ${{ env.RELEASE_VERSION}}-citadel-worker
+        DOCKER_FILE: worker.Dockerfile
+      run: |
+        docker build -f $DOCKER_FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Log out of Amazon ECR
+      if: always()
+      run: docker logout ${{ steps.login-ecr.outputs.registry }}
+
+  build-consumer:
+    runs-on: ubuntu-latest
+    needs: [pre-commit-check]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set Release Version
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_EPHEMERAL }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_EPHEMERAL }}
+        aws-region: ap-south-1
+    - name: Log in to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: Build, tag, and push consumer image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ephemeral-common
+        IMAGE_TAG: ${{ env.RELEASE_VERSION}}-citadel-consumer
+        DOCKER_FILE: consumer.Dockerfile
+      run: |
+        docker build -f $DOCKER_FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Log out of Amazon ECR
+      if: always()
+      run: docker logout ${{ steps.login-ecr.outputs.registry }}
+
+  build-scheduler:
+    runs-on: ubuntu-latest
+    needs: [pre-commit-check]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set Release Version
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_EPHEMERAL }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_EPHEMERAL }}
+        aws-region: ap-south-1
+    - name: Log in to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: Build, tag, and push scheduler image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: ephemeral-common
+        IMAGE_TAG: ${{ env.RELEASE_VERSION}}-citadel-scheduler
+        DOCKER_FILE: scheduler.Dockerfile
+      run: |
+        docker build -f $DOCKER_FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Log out of Amazon ECR
+      if: always()
+      run: docker logout ${{ steps.login-ecr.outputs.registry }}

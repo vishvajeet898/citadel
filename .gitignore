@@ -1,0 +1,10 @@
+.vscode
+node_modules
+.DS_Store
+.idea
+development.yaml
+tmp/*
+config.yaml
+example
+postgres-data/
+firestore-service.json

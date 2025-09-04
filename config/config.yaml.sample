@@ -1,0 +1,122 @@
+server:
+  port: 8080
+  host: 0.0.0.0
+
+database:
+  host: citadel-postgres
+  port: 5432
+  username: postgres
+  password: postgres
+  database: citadel
+  maxOpenConnection: 100
+  maxIdleConnection: 10
+
+redis:
+  pubsub:
+    address: "pubsub-redis:6379"
+    password: ""
+    db: 189
+    poolsize: 2
+    minidle: 1
+  address: "citadel-redis:6379"
+  password: ""
+  db: 1
+
+cors_allow_origin:
+  - http://localhost:8080
+
+sentry:
+  dsn: ""
+
+env: dev
+
+api_domain: http://localhost:8080
+
+service_name: citadel
+
+aws:
+  bucket: xxx
+  S3_AWS_ACCESS_KEY_ID: xxx
+  S3_AWS_SECRET_ACCESS_KEY: xxx
+  SQS_AWS_ACCESS_KEY_ID: xxx
+  SQS_AWS_SECRET_ACCESS_KEY: xxx
+  AWS_REGION: xxx
+  SQS_QUEUE_URL: xxx
+  SNS_AWS_ACCESS_KEY_ID: xxx
+  SNS_AWS_SECRET_ACCESS_KEY: xxx
+
+cds:
+  api_key: "xxx"
+  base_url: "xxx"
+  user_email: "xxx"
+
+worker:
+  broker: 'xxx'
+  default_queue: xxx
+  result_backend: 'xxx'
+  redis_pool_size: ''
+  redis_max_idle: ''
+  processes: 10
+
+doctor_tat_duration: 30
+
+active_city_codes:
+  - BLR
+  - DEL
+  - NRL
+
+oms:
+  base_url: "xxx"
+  api_key: "xxx"
+
+topics:
+  order_report_update: xxx
+  order_results_approved: xxx
+
+s3wrapper:
+  base_url: xxx
+  api_key: xxx
+
+cron_frequencies:
+  stale_tasks_periodic_task: "* * * * *"
+
+report_rebranding:
+  base_url: xxx
+
+patient_service:
+  base_url: xxx
+  api_key: "xxx"
+
+attune:
+  api_base_url: xxx
+  username: xxx
+  password: xxx
+  client_id: xxx
+  org_code: xxx
+  result_file_type: string
+  incoming_api_key: xxx
+  client_secret: xxx
+  org_codes:
+    1: xxx
+    10: xxx
+    21: xxx
+
+security:
+  jwt_secret: xxx
+  url_paths_to_skip_jwt_auth:
+    - /ping/
+    - /api/v1/users/get-user-by-email/
+
+porte:
+  incoming_api_key: xxx
+
+citadel_system_id: 1
+
+lis_system_id: 1
+
+stale_task_duration: 10
+
+auto_approval_ids_map:
+  BLR: 1
+  DEL: 1
+  NRL: 1

@@ -1,0 +1,87 @@
+version: "3.8"
+services:
+  # citadel-postgres:
+  #   container_name: "citadel-postgres"
+  #   restart: always
+  #   image: postgres:14-alpine
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     APP_DB_USER: docker
+  #     APP_DB_PASS: docker
+  #     APP_DB_NAME: citadel
+  #   ports:
+  #     - 15004:5432
+  #   volumes:
+  #     - ./db:/docker-entrypoint-initdb.d/
+  #     - ./postgres-data:/var/lib/postgresql/data
+
+  # citadel-api-migrate:
+  #   build:
+  #     context: .
+  #     dockerfile: dbmate.Dockerfile
+  #   image: citadel-api-migrate
+  #   environment:
+  #     DATABASE_URL: "postgres://postgres:postgres@citadel-postgres:5432/citadel?sslmode=disable"
+  #   depends_on:
+  #     - citadel-postgres
+
+  citadel-api:
+    container_name: "citadel-api"
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    image: &api api
+    depends_on:
+    #   - citadel-postgres
+      - citadel-redis
+    ports:
+      - 8080:8080
+      - 2345:2345 # For using delve
+    volumes:
+      - ./:/go/src/github.com/Orange-Health/citadel
+
+  citadel-redis:
+    container_name: "citadel-redis"
+    restart: always
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  # citadel-worker:
+  #   container_name: "citadel-worker"
+  #   build:
+  #     context: .
+  #     dockerfile: ./worker/dev.Dockerfile
+  #   image: &worker worker
+  #   restart: always
+  #   volumes:
+  #     - ./:/go/src/github.com/Orange-Health/citadel
+  #   depends_on:
+  #     - citadel-redis
+  #     - citadel-postgres
+
+  # citadel-consumer:
+  #   container_name: "citadel-consumer"
+  #   build:
+  #     context: .
+  #     dockerfile: ./consumer/dev.Dockerfile
+  #   image: &consumer consumer
+  #   restart: always
+  #   volumes:
+  #     - ./:/go/src/github.com/Orange-Health/citadel
+  #   depends_on:
+  #     - citadel-redis
+  #     - citadel-postgres
+
+  # citadel-scheduler:
+  #   build:
+  #     context: .
+  #     dockerfile: ./scheduler/dev.Dockerfile
+  #   image: &scheduler scheduler
+  #   restart: always
+  #   volumes:
+  #     - ./:/go/src/github.com/Orange-Health/citadel
+  #   depends_on:
+  #     - citadel-redis
+  #     - citadel-postgres

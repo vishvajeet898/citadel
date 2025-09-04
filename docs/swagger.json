@@ -1,0 +1,2386 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Citadel API Documentation",
+        "title": "Citadel API",
+        "contact": {}
+    },
+    "paths": {
+        "/": {
+            "post": {
+                "description": "Create Task Pathologist Mapping",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "task-pathologist-mapping"
+                ],
+                "summary": "Create Task Pathologist Mapping",
+                "parameters": [
+                    {
+                        "description": "Task Pathologist Mapping",
+                        "name": "structures.taskPathologistMapping",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/structures.TaskPathologistMapping"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/structures.TaskPathologistMapping"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/attachments/tasks/{taskId}": {
+            "get": {
+                "description": "Get all attachments by task id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "attachments"
+                ],
+                "summary": "Get Attachments",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "taskId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Attachments",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/structures.Attachment"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Add attachment by Task ID and Investigation ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "attachments"
+                ],
+                "summary": "Add Attachment",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "taskId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Attachments",
+                        "schema": {
+                            "$ref": "#/definitions/structures.Attachment"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/audit_logs/tasks/{taskId}": {
+            "get": {
+                "description": "Get all audit logs by order id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "audit_logs"
+                ],
+                "summary": "Get Audit Logs",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Audit Logs",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/structures.AuditLog"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/investigation-results/patients/delta-values": {
+            "get": {
+                "description": "Get delta values from patient id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "investigation-results"
+                ],
+                "summary": "Get Delta Values from Patient ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Patient Id",
+                        "name": "patient_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Master Investigation Ids",
+                        "name": "master_investigation_ids",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delta Values",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/structures.DeltaValuesStructResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/investigation-results/patients/past-records": {
+            "get": {
+                "description": "Get all investigation results of a patient",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "investigation-results"
+                ],
+                "summary": "Get Patient Past Records",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Patient ID",
+                        "name": "patient_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Patient Past Records",
+                        "schema": {
+                            "$ref": "#/definitions/structures.PatientPastRecordsApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/investigation-results/tasks/{taskId}/details": {
+            "get": {
+                "description": "Get all investigation results by task id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "investigation-results"
+                ],
+                "summary": "Get Investigation Results",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "taskId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Investigation Results",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/structures.InvestigationResult"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/investigation-results/tasks/{taskId}/investigation-abnormality": {
+            "get": {
+                "description": "Get investigation abnormality by task id, investigation code and value",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "investigation-results"
+                ],
+                "summary": "Get Investigation Abnormality",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "taskId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Investigation Code",
+                        "name": "investigation_code",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Investigation Value",
+                        "name": "investigation_value",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Abnormality",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/investigation-results/tasks/{taskId}/modify-value": {
+            "post": {
+                "description": "Get derived investigations and abnormality by task id, investigation code and value",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "investigation-results"
+                ],
+                "summary": "Get Derived Investigations and Abnormality",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "taskId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Modify Value API Request",
+                        "name": "ModifyValueApiRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/structures.ModifyValueApiRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Abnormality",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/report-generation/trigger": {
+            "post": {
+                "description": "Trigger Report Generation Event for a given order ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Report Generation"
+                ],
+                "summary": "Trigger Report Generation Event",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Order ID",
+                        "name": "order_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "array",
+                        "description": "Test IDs",
+                        "name": "test_ids",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "City Code",
+                        "name": "city_code",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/structures.CommonAPIResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/structures.CommonAPIResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/structures.CommonAPIResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/searchController/tasks": {
+            "get": {
+                "description": "Get all tasks based on filters provided",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "searchController"
+                ],
+                "summary": "Get Tasks List",
+                "responses": {
+                    "200": {
+                        "description": "Tasks List",
+                        "schema": {
+                            "$ref": "#/definitions/structures.TaskListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Error Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/task-metadata/task/{taskId}/details": {
+            "get": {
+                "description": "Get Task Metadata Details for the given Task ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "task-metadata"
+                ],
+                "summary": "GetTaskMetadataDetails",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "taskId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_Orange-Health_citadel_apps_task_metadata_structures.TaskMetadata"
+                        }
+                    },
+                    "400": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    },
+                    "404": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    },
+                    "500": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/task-metadata/task/{taskId}/last-event-sent-at": {
+            "patch": {
+                "description": "Update Last Event Sent At for the given Task ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "task-metadata"
+                ],
+                "summary": "UpdateLastEventSentAt",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "taskId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    },
+                    "404": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    },
+                    "500": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/task-metadata/tasks/:taskId": {
+            "patch": {
+                "description": "Update Task Metadata Details for the given Task ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "task-metadata"
+                ],
+                "summary": "UpdateTaskMetadata",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "taskId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Task Metadata Object",
+                        "name": "taskMetadata",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TaskMetadata"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/models.TaskMetadata"
+                        }
+                    },
+                    "400": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    },
+                    "404": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    },
+                    "500": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tasks/count": {
+            "get": {
+                "description": "Get all tasks based on filters provided",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tasks"
+                ],
+                "summary": "GetTasksList",
+                "responses": {
+                    "200": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tasks/details": {
+            "patch": {
+                "description": "Update all task details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tasks"
+                ],
+                "summary": "UpdateAllTaskDetails",
+                "parameters": [
+                    {
+                        "description": "Task Details",
+                        "name": "taskDetails",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/structures.UpdateAllTaskDetailsStruct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tasks/{taskId}/calling-details": {
+            "get": {
+                "description": "Get Calling Task Details",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tasks"
+                ],
+                "summary": "GetCallingTaskDetails",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "taskId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Calling Type",
+                        "name": "calling_type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Calling Details Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.TaskCallingDetailsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tasks/{taskId}/details": {
+            "get": {
+                "description": "Get Task Details for the given Task ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tasks"
+                ],
+                "summary": "GetTaskById",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "taskId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.TaskDetail"
+                        }
+                    },
+                    "400": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    },
+                    "404": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    },
+                    "500": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tasks/{taskId}/undo-release": {
+            "patch": {
+                "description": "Undo Release Report for the given Task ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tasks"
+                ],
+                "summary": "UndoReleaseReport",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "taskId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/templates": {
+            "get": {
+                "description": "Get Templates By Type",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "templates"
+                ],
+                "summary": "Get Templates By Type",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Template Type",
+                        "name": "template_type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Templates",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/structures.Template"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/test-details/tasks/{taskId}": {
+            "get": {
+                "description": "Get Test Details for the given Task ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "test-details"
+                ],
+                "summary": "GetTestDetailByTaskId",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Task ID",
+                        "name": "taskId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/structures.TestDetail"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    },
+                    "404": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    },
+                    "500": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/test-details/{testDetailId}": {
+            "get": {
+                "description": "Get Test Detail for the given testDetailId",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "test-details"
+                ],
+                "summary": "GetTestDetailById",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Test Detail ID",
+                        "name": "testDetailId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Test Detail",
+                        "schema": {
+                            "$ref": "#/definitions/structures.TestDetail"
+                        }
+                    },
+                    "400": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    },
+                    "404": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    },
+                    "500": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user": {
+            "post": {
+                "description": "Create a user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create User",
+                "parameters": [
+                    {
+                        "description": "User Details",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/structures.UserDetail"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Details",
+                        "schema": {
+                            "$ref": "#/definitions/structures.UserDetail"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{id}": {
+            "post": {
+                "description": "Update a user by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Update User",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "User Details",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/structures.UserDetail"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Details",
+                        "schema": {
+                            "$ref": "#/definitions/structures.UserDetail"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users": {
+            "get": {
+                "description": "Get all users",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get Users",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Details",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/structures.UserDetail"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/get-user-by-email": {
+            "get": {
+                "description": "Get a user by email",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get User By Email",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Email",
+                        "name": "email",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Details",
+                        "schema": {
+                            "$ref": "#/definitions/structures.UserDetail"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/{id}": {
+            "get": {
+                "description": "Get a user by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get User",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Detail",
+                        "schema": {
+                            "$ref": "#/definitions/structures.UserDetail"
+                        }
+                    }
+                }
+            }
+        },
+        "/example": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Example Endpoint",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "application/json",
+                        "description": "Content-Type",
+                        "name": "Content-Type",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/ping": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Health Check",
+                "responses": {
+                    "200": {
+                        "description": "Common API Response",
+                        "schema": {
+                            "$ref": "#/definitions/structures.CommonAPIResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "github_com_Orange-Health_citadel_apps_task_metadata_structures.TaskMetadata": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "integer"
+                },
+                "doctor_name": {
+                    "type": "string"
+                },
+                "doctor_notes": {
+                    "type": "string"
+                },
+                "doctor_number": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_critical": {
+                    "type": "boolean"
+                },
+                "is_morphle": {
+                    "type": "boolean"
+                },
+                "is_package": {
+                    "type": "boolean"
+                },
+                "task_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_Orange-Health_citadel_apps_task_structures.TaskMetadata": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "integer"
+                },
+                "doctor_name": {
+                    "description": "The name of the doctor.\nexample: \"Dr. John Doe\"",
+                    "type": "string"
+                },
+                "doctor_notes": {
+                    "description": "Notes from the doctor.\nexample: \"Patient is suffering from fever.\"",
+                    "type": "string"
+                },
+                "doctor_number": {
+                    "description": "The number of the doctor.\nexample: \"9087654321\"",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_critical": {
+                    "description": "Whether the task is critical.\nexample: false",
+                    "type": "boolean"
+                },
+                "is_morphle": {
+                    "description": "Whether the task is morphle.\nexample: false",
+                    "type": "boolean"
+                },
+                "is_package": {
+                    "description": "Whether the task is a package.\nexample: false",
+                    "type": "boolean"
+                },
+                "partner_name": {
+                    "description": "The name of the partner.\nexample: \"Partner Name\"",
+                    "type": "string"
+                },
+                "task_id": {
+                    "description": "The ID of the task.\nexample: 1",
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.TaskMetadata": {
+            "type": "object"
+        },
+        "structures.Attachment": {
+            "type": "object",
+            "properties": {
+                "attachment_label": {
+                    "description": "The attachment label of the attachment.\nexample: \"Report\"",
+                    "type": "string"
+                },
+                "attachment_type": {
+                    "description": "The attachment type of the attachment.\nexample: \"PDF\"",
+                    "type": "string"
+                },
+                "attachment_url": {
+                    "description": "The attachment URL of the attachment.\nexample: \"citadel/demo.pdf\"",
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "integer"
+                },
+                "extension": {
+                    "description": "The extension of the attachment.\nexample: \"pdf\"",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "investigation_result_id": {
+                    "description": "The investigation result ID of the attachment.\nexample: 1",
+                    "type": "integer"
+                },
+                "is_reportable": {
+                    "description": "Is the attachment reportable in PDF.\nexample: true",
+                    "type": "boolean"
+                },
+                "reference": {
+                    "description": "The reference URL of the attachment.\nexample: \"https://www.google.com\"",
+                    "type": "string"
+                },
+                "task_id": {
+                    "description": "The task ID of the attachment.\nexample: 1",
+                    "type": "integer"
+                },
+                "thumbnail_reference": {
+                    "description": "The thumbnail reference of the attachment.\nexample: \"citadel/resized-media/demo.pdf\"",
+                    "type": "string"
+                },
+                "thumbnail_url": {
+                    "description": "The thumbnail URL of the attachment.\nexample: \"https://www.google.com\"",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "structures.AuditLog": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "log": {
+                    "description": "The log of the AuditLog.\nexample: {\"log\": {\"request_logs\": [{\"id\": \"1\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}], \"order_logs\": [{\"id\": \"1\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}], \"sample_logs\": [{\"id\": \"1\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}], \"test_logs\": [{\"id\": \"1\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}], \"investigation_logs\": [{\"investigation_name\": \"CBC\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}]}]}]}]}]}}",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/structures.Log"
+                        }
+                    ]
+                },
+                "log_type": {
+                    "description": "The log type of the AuditLog.\nexample: \"Task\"",
+                    "type": "string"
+                },
+                "task_id": {
+                    "description": "The task ID of the AudiLog.\nexample: 1",
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "structures.CommonAPIResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "The data of the response."
+                },
+                "error": {
+                    "description": "The error of the response.\nexample: \"Error while fetching\"",
+                    "type": "string"
+                },
+                "message": {
+                    "description": "The message of the response.\nexample: \"Fetched Successfully\"",
+                    "type": "string"
+                },
+                "validation_errors": {
+                    "description": "Validation Errors\nexample: {\"field\": \"error message\"}",
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            }
+        },
+        "structures.CommonError": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "status_code": {
+                    "type": "integer"
+                }
+            }
+        },
+        "structures.DeltaValuesStructResponse": {
+            "type": "object",
+            "properties": {
+                "approved_at": {
+                    "type": "string"
+                },
+                "investigation_value": {
+                    "type": "string"
+                },
+                "master_investigation_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "structures.InvestigationData": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Data contains the investigation data in text format\nswagger:strfmt binary",
+                    "type": "string"
+                },
+                "data_type": {
+                    "description": "The investigation data type.\nexample: \"medical_remark\"",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "The investigation data ID.\nexample: 1",
+                    "type": "integer"
+                },
+                "investigation_result_id": {
+                    "description": "InvestigationResultId is the ID of the investigation result.\nexample: 1",
+                    "type": "integer"
+                }
+            }
+        },
+        "structures.InvestigationLogs": {
+            "type": "object",
+            "properties": {
+                "investigation_name": {
+                    "description": "The investigation name of the InvestigationLogs.\nexample: \"CBC\"",
+                    "type": "string"
+                },
+                "status_logs": {
+                    "description": "The status logs of the InvestigationLogs.\nexample: [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}]",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.StatusLog"
+                    }
+                }
+            }
+        },
+        "structures.InvestigationResult": {
+            "type": "object",
+            "properties": {
+                "abnormality": {
+                    "description": "The investigation abnormality.\nexample: \"N\"",
+                    "type": "string"
+                },
+                "approved_at": {
+                    "description": "The investigation Approved At.\nexample: \"2021-07-01T12:00:00Z\"",
+                    "type": "string"
+                },
+                "approved_by": {
+                    "description": "The investigation Approved By.\nexample: 1",
+                    "type": "integer"
+                },
+                "auto_approval_failure_reason": {
+                    "type": "string"
+                },
+                "barcodes": {
+                    "description": "Barcodes of the investigation.\nexample: \"1234567890\"",
+                    "type": "string"
+                },
+                "department": {
+                    "description": "The investigation Department of the investigation result.\nexample: \"Hematology\"",
+                    "type": "string"
+                },
+                "device_value": {
+                    "description": "The investigation device value of the investigation result.\nexample: \"12.5\"",
+                    "type": "string"
+                },
+                "entered_at": {
+                    "description": "The investigation result Entered At.\nexample: \"2021-07-01T12:00:00Z\"",
+                    "type": "string"
+                },
+                "entered_by": {
+                    "description": "The investigation Entered Technician.\nexample: 1",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "The investigation result ID.\nexample: 1",
+                    "type": "integer"
+                },
+                "investigation_data": {
+                    "description": "The investigation Investigation Data.\nexample: {\n\t\t\"id\": 1,\n\t\t\"data\": \"This is a investigation value in text\",\n\t\t\"data_type\": \"investigation_value_text\",\n\t\t\"created_at\": \"2021-07-01T12:00:00Z\",\n\t\t\"updated_at\": \"2021-07-01T12:00:00Z\",\n\t\t\"deleted_at\": \"2021-07-01T12:00:00Z\",\n\t\t\"created_by\": 1,\n\t\t\"updated_by\": 1,\n\t\t\"deleted_by\": 1\n\t}",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/structures.InvestigationData"
+                        }
+                    ]
+                },
+                "investigation_name": {
+                    "description": "The investigation name of the investigation result.\nexample: \"Hemoglobin\"",
+                    "type": "string"
+                },
+                "investigation_value": {
+                    "description": "The investigation value of the investigation result.\nexample: \"12.5\"",
+                    "type": "string"
+                },
+                "is_auto_approved": {
+                    "description": "If the investigation was auto approved.\nexample: true",
+                    "type": "boolean"
+                },
+                "is_critical": {
+                    "description": "The investigation Is Critical.\nexample: true",
+                    "type": "boolean"
+                },
+                "is_non_reportable": {
+                    "description": "The investigation Reportable in PDF.\nexample: true",
+                    "type": "boolean"
+                },
+                "lis_code": {
+                    "description": "The investigation Lis-Code.\nexample: \"HGB0001\"",
+                    "type": "string"
+                },
+                "master_investigation_id": {
+                    "description": "The investigation ID of the investigation result.\nexample: 1",
+                    "type": "integer"
+                },
+                "master_test_id": {
+                    "description": "The investigation Master Test ID.\nexample: 1",
+                    "type": "integer"
+                },
+                "method": {
+                    "description": "The investigation method performed.\nexample: \"Manual\"",
+                    "type": "string"
+                },
+                "method_type": {
+                    "description": "The investigation method type.\nexample: \"Manual\"",
+                    "type": "string"
+                },
+                "reference_range_text": {
+                    "description": "The investigation reference range of the investigation result.\nexample: \"12.0 - 16.0\"",
+                    "type": "string"
+                },
+                "result_representation_type": {
+                    "description": "The investigation result representation type of the investigation result.\nexample: \"biopattern\"",
+                    "type": "string"
+                },
+                "source": {
+                    "description": "The investigation Source.\nexample: \"OH Lab BLR\"",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "The investigation Status.\nexample: \"Approved\"",
+                    "type": "string"
+                },
+                "test_detail_id": {
+                    "description": "The test detail ID of the investigation result.\nexample: 1",
+                    "type": "integer"
+                },
+                "test_details_status": {
+                    "description": "The test detail status of the investigation result.\nexample: \"approved\"",
+                    "type": "string"
+                },
+                "uom": {
+                    "description": "The investigation unit of measurement of the investigation result.\nexample: \"g/dL\"",
+                    "type": "string"
+                }
+            }
+        },
+        "structures.LabDetailsStruct": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "structures.Log": {
+            "type": "object",
+            "properties": {
+                "request_logs": {
+                    "description": "The request details of the Log.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.RequestLog"
+                    }
+                }
+            }
+        },
+        "structures.ModifyValueApiRequest": {
+            "type": "object",
+            "properties": {
+                "current_investigation": {
+                    "$ref": "#/definitions/structures.ModifyValueRequest"
+                },
+                "past_investigations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.ModifyValueRequest"
+                    }
+                }
+            }
+        },
+        "structures.ModifyValueRequest": {
+            "type": "object",
+            "properties": {
+                "investigation_value": {
+                    "type": "string"
+                },
+                "master_investigation_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "structures.OrderLogs": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The ID of the OrderLogs.\nexample: 1",
+                    "type": "string"
+                },
+                "sample_logs": {
+                    "description": "The sample logs of the RequestLog.\nexample: [{\"id\": \"1\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}], \"test_logs\": [{\"id\": \"1\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}], \"investigation_logs\": [{\"investigation_name\": \"CBC\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}]}]}]",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.SampleLogs"
+                    }
+                },
+                "status_logs": {
+                    "description": "The status logs of the OrderLogs.\nexample: [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}]",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.StatusLog"
+                    }
+                }
+            }
+        },
+        "structures.PatientDetail": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "integer"
+                },
+                "dob": {
+                    "description": "The date of birth of the patient.\nexample: \"1997-01-01\"",
+                    "type": "string"
+                },
+                "expected_dob": {
+                    "description": "The expected date of birth of the patient.\nexample: \"1997-01-01\"",
+                    "type": "string"
+                },
+                "gender": {
+                    "description": "The gender of the patient.\nexample: \"Male/Female\"",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "The name of the patient.\nexample: \"Jane Doe\"",
+                    "type": "string"
+                },
+                "number": {
+                    "description": "The number of the patient.\nexample: \"9087654321\"",
+                    "type": "string"
+                },
+                "system_patient_id": {
+                    "description": "The system patient ID of the patient.\nexample: \"12345\"",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "structures.PatientPastRecordsApiResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.PatientPastRecordsData"
+                    }
+                },
+                "dates": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "patient_details": {
+                    "$ref": "#/definitions/structures.PatientPastRecordsPatientDetails"
+                }
+            }
+        },
+        "structures.PatientPastRecordsData": {
+            "type": "object",
+            "properties": {
+                "department": {
+                    "type": "string"
+                },
+                "investigations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.PatientPastRecordsInvestigations"
+                    }
+                }
+            }
+        },
+        "structures.PatientPastRecordsInvestigations": {
+            "type": "object",
+            "properties": {
+                "investigation_id": {
+                    "type": "integer"
+                },
+                "investigation_name": {
+                    "type": "string"
+                },
+                "past_records": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/structures.PatientPastRecordsValue"
+                        }
+                    }
+                }
+            }
+        },
+        "structures.PatientPastRecordsPatientDetails": {
+            "type": "object",
+            "properties": {
+                "age_days": {
+                    "type": "integer"
+                },
+                "age_months": {
+                    "type": "integer"
+                },
+                "age_years": {
+                    "type": "integer"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "structures.PatientPastRecordsValue": {
+            "type": "object",
+            "properties": {
+                "investigation_data": {
+                    "type": "string"
+                },
+                "investigation_value": {
+                    "type": "string"
+                },
+                "uom": {
+                    "type": "string"
+                }
+            }
+        },
+        "structures.RequestLog": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The ID of the RequestLog.\nexample: 1",
+                    "type": "string"
+                },
+                "order_logs": {
+                    "description": "The order logs of the RequestLog.\nexample: [{\"id\": \"1\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}], \"sample_logs\": [{\"id\": \"1\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}], \"test_logs\": [{\"id\": \"1\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}], \"investigation_logs\": [{\"investigation_name\": \"CBC\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}]}]}]}]",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.OrderLogs"
+                    }
+                },
+                "status_logs": {
+                    "description": "The status logs of the RequestLog.\nexample: [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}]",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.StatusLog"
+                    }
+                }
+            }
+        },
+        "structures.SampleLogs": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The ID of the SampleLogs.\nexample: 1",
+                    "type": "string"
+                },
+                "status_logs": {
+                    "description": "The status logs of the SampleLogs.\nexample: [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}]",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.StatusLog"
+                    }
+                },
+                "test_logs": {
+                    "description": "The test logs of the SampleLogs.\nexample: [{\"id\": \"1\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}], \"investigation_logs\": [{\"investigation_name\": \"CBC\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}]}]",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.TestLogs"
+                    }
+                }
+            }
+        },
+        "structures.StatusLog": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "description": "The status of the StatusLog.\nexample: \"Pending\"",
+                    "type": "string"
+                },
+                "timestamp": {
+                    "description": "The timestamp of the StatusLog.\nexample: \"2021-07-01T12:00:00Z\"",
+                    "type": "string"
+                },
+                "user": {
+                    "description": "The user of the StatusLog.\nexample: \"John Doe\"",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "The user ID of the StatusLog.\nexample: \"1\"",
+                    "type": "string"
+                }
+            }
+        },
+        "structures.TaskCallingDetailsResponse": {
+            "type": "object",
+            "properties": {
+                "agent_id": {
+                    "type": "string"
+                },
+                "mobile_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "structures.TaskContentStruct": {
+            "type": "object",
+            "properties": {
+                "contains_morphle": {
+                    "type": "boolean"
+                },
+                "contains_package": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "structures.TaskDetail": {
+            "type": "object",
+            "properties": {
+                "city_code": {
+                    "description": "The city code of the task.\nexample: \"BLR\"",
+                    "type": "string"
+                },
+                "completed_at": {
+                    "description": "The completion time of the task.\nexample: \"2022-01-01T00:00:00Z\"",
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_active": {
+                    "description": "Whether the task is active.\nexample: true",
+                    "type": "boolean"
+                },
+                "lab_id": {
+                    "description": "The lab ID of the task.\nexample: 1",
+                    "type": "integer"
+                },
+                "order_id": {
+                    "description": "The order ID of the task.\nexample: 54321",
+                    "type": "integer"
+                },
+                "order_type": {
+                    "description": "The order type of the task.\nexample: \"D2C\"",
+                    "type": "string"
+                },
+                "patient_details": {
+                    "description": "The details of the patient.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/structures.PatientDetail"
+                        }
+                    ]
+                },
+                "request_id": {
+                    "description": "The request ID of the task.\nexample: \"REQ12345\"",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "The status of the task.\nexample: \"Completed\"",
+                    "type": "string"
+                },
+                "task_metadata": {
+                    "description": "The Task Metadata.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/github_com_Orange-Health_citadel_apps_task_structures.TaskMetadata"
+                        }
+                    ]
+                },
+                "task_visits": {
+                    "description": "The Task Visit Details.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.VisitDetailsForTask"
+                    }
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                },
+                "visit_count": {
+                    "description": "Visit Count",
+                    "type": "integer"
+                }
+            }
+        },
+        "structures.TaskDetailsStruct": {
+            "type": "object",
+            "properties": {
+                "approved_by": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "city_code": {
+                    "type": "string"
+                },
+                "co_authorized_by": {
+                    "type": "integer"
+                },
+                "doctor_tat": {
+                    "type": "string"
+                },
+                "lab_details": {
+                    "$ref": "#/definitions/structures.LabDetailsStruct"
+                },
+                "order_id": {
+                    "type": "integer"
+                },
+                "patient_name": {
+                    "type": "string"
+                },
+                "picked_by": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "task_contents": {
+                    "$ref": "#/definitions/structures.TaskContentStruct"
+                },
+                "task_id": {
+                    "type": "integer"
+                },
+                "test_details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.TestDetailsStruct"
+                    }
+                }
+            }
+        },
+        "structures.TaskListResponse": {
+            "type": "object",
+            "properties": {
+                "co_authorize": {
+                    "$ref": "#/definitions/structures.TaskResponseStruct"
+                },
+                "critical": {
+                    "$ref": "#/definitions/structures.TaskResponseStruct"
+                },
+                "in_progress": {
+                    "$ref": "#/definitions/structures.TaskResponseStruct"
+                },
+                "normal": {
+                    "$ref": "#/definitions/structures.TaskResponseStruct"
+                },
+                "withheld": {
+                    "$ref": "#/definitions/structures.TaskResponseStruct"
+                }
+            }
+        },
+        "structures.TaskPathologistMapping": {
+            "type": "object",
+            "properties": {
+                "is_active": {
+                    "description": "Whether the task pathologist mapping is active.\nexample: true",
+                    "type": "boolean"
+                },
+                "pathologist_id": {
+                    "description": "The ID of the pathologist.\nexample: 1",
+                    "type": "integer"
+                },
+                "task_id": {
+                    "description": "The ID of the task.\nexample: 1",
+                    "type": "integer"
+                }
+            }
+        },
+        "structures.TaskResponseStruct": {
+            "type": "object",
+            "properties": {
+                "show_more": {
+                    "type": "boolean"
+                },
+                "tasks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.TaskDetailsStruct"
+                    }
+                }
+            }
+        },
+        "structures.Template": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "integer"
+                },
+                "description": {
+                    "description": "The description of the Templete.\nexample: \"This is a medical remark\"",
+                    "type": "string"
+                },
+                "display_order": {
+                    "description": "The display order of the Templete.\nexample: 1",
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "template_type": {
+                    "description": "The type of the Templete.\nexample: \"medical_remark\"",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "The title of the Templete.\nexample: \"This is a medical remark\"",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "structures.TestDetail": {
+            "type": "object",
+            "properties": {
+                "city_code": {
+                    "description": "Need to change this to OMS City Code",
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "created_by": {
+                    "type": "integer"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "deleted_by": {
+                    "type": "integer"
+                },
+                "department": {
+                    "type": "string"
+                },
+                "doctor_tat": {
+                    "description": "Doctor TAT to complete the test result review.\nexample: \"2022-10-01T00:00:00\"",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_auto_approved": {
+                    "description": "The test result of the test.\nexample: \"N\"",
+                    "type": "boolean"
+                },
+                "is_manual_report_upload": {
+                    "description": "The test is manual report upload.\nexample: true",
+                    "type": "boolean"
+                },
+                "lab_id": {
+                    "type": "integer"
+                },
+                "lis_code": {
+                    "type": "string"
+                },
+                "master_package_id": {
+                    "description": "Master Package Id of the test.\nexample: 1234",
+                    "type": "integer"
+                },
+                "master_test_id": {
+                    "description": "The master test id of the test.\nexample: 1234",
+                    "type": "integer"
+                },
+                "oms_order_id": {
+                    "description": "The OMS order id of the test.\nexample: 12345",
+                    "type": "integer"
+                },
+                "oms_test_id": {
+                    "description": "The OMS test ID of the test.\nexample: 54321",
+                    "type": "integer"
+                },
+                "processing_lab_id": {
+                    "type": "integer"
+                },
+                "report_sent_at": {
+                    "description": "The test Report Sent At.\nexample: \"2022-10-01T00:00:00\"",
+                    "type": "string"
+                },
+                "report_status": {
+                    "type": "string"
+                },
+                "status": {
+                    "description": "The test type of the test.\nexample: \"Open\"",
+                    "type": "string"
+                },
+                "task_id": {
+                    "description": "The task ID of the test.\nexample: 2345",
+                    "type": "integer"
+                },
+                "test_name": {
+                    "description": "The test name of the test.\nexample: \"CBC\"",
+                    "type": "string"
+                },
+                "test_type": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "integer"
+                }
+            }
+        },
+        "structures.TestDetailsStruct": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "status_label": {
+                    "type": "string"
+                }
+            }
+        },
+        "structures.TestLogs": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The ID of the TestLogs.\nexample: 1",
+                    "type": "string"
+                },
+                "investigation_logs": {
+                    "description": "The investigation logs of the TestLogs.\nexample: [{\"investigation_name\": \"CBC\", \"status_logs\": [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}]",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.InvestigationLogs"
+                    }
+                },
+                "status_logs": {
+                    "description": "The status logs of the TestLogs.\nexample: [{\"status\": \"Pending\", \"timestamp\": \"2021-07-01T12:00\n:00Z\", \"user\": \"John Doe\", \"user_id\": \"1\"}]",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.StatusLog"
+                    }
+                }
+            }
+        },
+        "structures.UpdateAllTaskDetailsStruct": {
+            "type": "object",
+            "properties": {
+                "task": {
+                    "$ref": "#/definitions/structures.UpdateTaskStruct"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "structures.UpdateInvestigationStruct": {
+            "type": "object",
+            "properties": {
+                "abnormality": {
+                    "type": "string"
+                },
+                "co_authorize_to": {
+                    "type": "integer"
+                },
+                "department": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "investigation_data": {
+                    "type": "string"
+                },
+                "investigation_value": {
+                    "type": "string"
+                },
+                "remarks": {
+                    "$ref": "#/definitions/structures.UpdateRemarkStruct"
+                },
+                "rerun_details": {
+                    "$ref": "#/definitions/structures.UpdateRerunDetailsStruct"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "structures.UpdateRemarkStruct": {
+            "type": "object",
+            "properties": {
+                "medical_remark": {
+                    "$ref": "#/definitions/structures.UpdateRemarkStructDetails"
+                },
+                "withheld_reason": {
+                    "$ref": "#/definitions/structures.UpdateRemarkStructDetails"
+                }
+            }
+        },
+        "structures.UpdateRemarkStructDetails": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "to_delete": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "structures.UpdateRerunDetailsStruct": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "rerun_reason": {
+                    "type": "string"
+                }
+            }
+        },
+        "structures.UpdateTaskStruct": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "test_details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.UpdateTestDetailsStruct"
+                    }
+                }
+            }
+        },
+        "structures.UpdateTestDetailsStruct": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "investigations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/structures.UpdateInvestigationStruct"
+                    }
+                }
+            }
+        },
+        "structures.UserDetail": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "description": "The email of the user.\nexample: \"shrish.chandra@orangehealth.in\"",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "The id of the user.\nexample: 1",
+                    "type": "integer"
+                },
+                "user_name": {
+                    "description": "The user name of the user.\nexample: \"John Doe\"",
+                    "type": "string"
+                },
+                "user_type": {
+                    "description": "The user type of the user.\nexample: \"Pathologoist\"",
+                    "type": "string"
+                }
+            }
+        },
+        "structures.VisitDetailsForTask": {
+            "type": "object",
+            "properties": {
+                "sample_collected_at": {
+                    "type": "string"
+                },
+                "sample_received_at": {
+                    "type": "string"
+                },
+                "visit_id": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

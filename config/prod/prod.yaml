@@ -1,0 +1,371 @@
+server:
+  port: 8080
+  host: 0.0.0.0
+
+database:
+  host: "{{prod_citadel_DbHost}}"
+  port: 5432
+  username: "{{prod_citadel_DbUser}}"
+  password: "{{prod_citadel_DbPswd}}"
+  database: "prod_citadelv2"
+  maxOpenConnection: 100
+  maxIdleConnection: 10
+  sslmode: prefer
+
+redis:
+  pubsub:
+    address: "{{prod_webhook_redis}}"
+    password: ""
+    db: 1
+    poolsize: 10
+    minidle: 1
+  address: "{{prod_accounts_redis}}"
+  password: ""
+  db: 6 # TODO: Check once
+
+cors_allow_origin:
+  - https://porte-api.orangehealth.in
+
+sentry:
+  dsn: "https://b8da37b91e57824f13008dda43a49a84@o397714.ingest.us.sentry.io/4507743443484672"
+
+env: prod
+
+api_domain: http://citadel-api.orangehealth.in
+
+service_name: citadel # TODO: Check once
+
+aws:
+  bucket: oms-orders
+  S3_AWS_ACCESS_KEY_ID: "{{prod_awsS3AccessKeyId}}"
+  S3_AWS_SECRET_ACCESS_KEY: "{{prod_awsS3SecretAccessKey}}"
+  SQS_AWS_ACCESS_KEY_ID: "{{prod_golang_awsSqsAccessKeyId}}"
+  SQS_AWS_SECRET_ACCESS_KEY: "{{prod_golang_awsSqsSecretAccessKey}}"
+  AWS_REGION: ap-south-1
+  SQS_QUEUE_URL: "https://sqs.ap-south-1.amazonaws.com/606514307308/prod-citadel-consumer.fifo"
+  SQS_STANDARD_QUEUE_URL: "https://sqs.ap-south-1.amazonaws.com/606514307308/prod-citadel-consumer"
+  SNS_AWS_ACCESS_KEY_ID: "{{prod_golang_awsSnsAccessKeyId}}"
+  SNS_AWS_SECRET_ACCESS_KEY: "{{prod_golang_awsSnsSecretAccessKey}}"
+
+cds:
+  api_key: "{{prod_citadel_cdsApiKey}}"
+  base_url: http://cds-api
+  user_email: "dhruv@orangehealth.in"
+
+worker:
+  broker: "https://sqs.ap-south-1.amazonaws.com/606514307308"
+  default_queue: prod-citadel-worker
+  default_queue_fifo: prod-citadel-worker.fifo
+  result_backend: "redis://{{prod_accounts_redis}}/10"
+  redis_pool_size: ""
+  redis_max_idle: ""
+  processes: 10
+
+doctor_tat_duration: 30
+
+active_city_codes:
+  - BLR
+  - DEL
+  - NOA
+  - HYD
+  - MUM
+  - NRL
+
+oms:
+  base_url: "http://oms-router-api"
+  api_key: "{{prod_citadel_oms_secretKey}}"
+  base_domain: https://oms-city_code.orangehealth.in
+  incoming_api_key: "{{prod_citadel_oms_secretKey}}"
+
+topics:
+  order_report_update: "arn:aws:sns:ap-south-1:606514307308:prod_order_results_update.fifo"
+  order_results_approved: "arn:aws:sns:ap-south-1:606514307308:prod_order_results_approved.fifo"
+  contact_merge_confirm: "arn:aws:sns:ap-south-1:606514307308:prod-contact-merge-confirm"
+  ets_test_event: "arn:aws:sns:ap-south-1:606514307308:scheduler-task-updates.fifo"
+  report_ready: "arn:aws:sns:ap-south-1:606514307308:prod-report-ready.fifo"
+  oms_updates: "arn:aws:sns:ap-south-1:606514307308:prod-citadel-to-oms-events"
+  citadel: "arn:aws:sns:ap-south-1:606514307308:citadel-task-updates"
+
+s3wrapper:
+  base_url: https://files.orangehealth.in
+  api_key: "{{prod_citadel_s3wrapperApiKey}}"
+
+cron_frequencies:
+  stale_tasks_periodic_task: "* * * * *"
+  ets_tat_breached_frequency: "*/5 * * * *"
+  slack_alert_for_reverse_logistics_frequency: "1,31 * * * *"
+
+report_rebranding:
+  base_url: http://report-rebranding-api
+  token: "{{prod_reportRebranding_authToken}}"
+
+patient_service:
+  base_url: http://patients-api
+  api_key: "{{prod_citadel_patientApiKey}}"
+
+attune:
+  api_base_url: http://orange.attunelive.net/LimsAPI/api/
+  username: "Orange Diagnostics"
+  password: "{{prod_attune_clientPassword}}"
+  client_id: Orange Diagnostics
+  client_secret: "{{prod_attune_clientSecret}}"
+  org_codes:
+    1: Orange Diagnostics
+    10: Orange Health Diagnostic Gurgaon
+    21: Orange Health Diagnostic Lab
+    33: Orange Health Hyderabad Lab
+    52: Orange Health Mumbai
+    67: Orange NRL Bangalore
+    141: Orange Health Bangalore 2 (North)
+
+security:
+  jwt_secret: "{{prod_citadel_jwtSecret}}"
+  url_paths_to_skip_jwt_auth:
+    - /ping/
+    - /api/v1/users/get-user-by-email/
+    - /api/v1/external-investigation-results/bulk-upsert
+    - /api/v1/external-investigation-results/bulk-delete
+    - /api/v1/external-investigation-results/
+    - /api/v1/test-details/oms-test/lab-id
+    - /api/v1/test-sample-mapping/sample-number
+    - /api/v1/samples/add-barcode
+    - /api/v1/samples/add-barcode-for-orangers
+    - /api/v1/samples/update-task-sequence
+    - /api/v1/samples/update-sample-details-for-reschedule
+    - /api/v1/samples/scheduler/sample-details
+    - /api/v1/samples/scheduler/update-sample-details
+    - /api/v1/samples/order-details
+    - /api/v1/samples/delayed-samples-reverse-logistics
+    - /api/v1/samples/srf-order-ids
+    - /api/v1/search/info-screen/barcode/
+    - /api/v1/search/info-screen/order/
+    - /api/v1/search/info-screen/visit/
+    - /api/v1/search/barcode-details/
+    - /api/v1/samples/request-details
+    - /api/v1/samples/remap-samples
+    - /api/v1/samples/oms-test-details
+    - /api/v1/report-generation/trigger
+    - /api/v1/report-generation/trigger-order-approved-event
+    - /api/v1/samples/collect-volume
+    - /api/v1/samples/mark-sample-accessioned
+    - /api/v1/tasks/orders/
+
+porte:
+  incoming_api_key: "{{prod_porte_citadel_secretKey}}"
+
+ets:
+  incoming_api_key: "{{prod_citadel_ets_secretKey}}"
+
+citadel_system_id: 23
+
+lis_system_id: 24
+
+stale_task_duration: 10
+
+auto_approval_ids_map:
+  BLR: 31
+  DEL: 30
+  MUM: 17
+  HYD: 207
+  NOA: 33
+  NRL: 8
+
+groot:
+  incoming_api_key: "{{prod_groot_citadel_secretKey}}"
+
+health_api:
+  base_url: "http://health-api"
+  incoming_api_key: "{{prod_health_citadel_secretKey}}"
+  api_key: "{{prod_citadel_health_secretKey}}"
+
+accounts_api:
+  base_url: "http://accounts-api"
+  api_key: "{{prod_accounts_citadel_secretKey}}"
+
+partner_api:
+  base_url: "http://partner-api"
+  api_key: "{{prod_partner_incomingKey}}"
+
+slack:
+  base_url: https://slack.com
+  token: "{{prod_slack_apiToken}}"
+  report_sync_failures_channel: report-sync-failures-blr
+  missing_parameters_channel: missing-tests-investigations
+  sample_loss_risk_alert_channel: central-sample-loss-risk-alerts
+  auto_approval_failures_channel: auto-approval-failure-alerts
+  pdf_generation_channel: nrl-pdf-reports
+
+receiving_desk:
+  multiple_orders_enabled: false
+
+duty_doctor:
+  sunday:
+    shift_1:
+      start_time: 7:00
+      end_time: 16:00
+      doctor:
+        BLR: 1365385
+        DEL: 1327113
+        HYD: 1767249
+        MUM: 238349
+        NOA: 1414615
+        NRL: 349887
+    shift_2:
+      start_time: 16:00
+      end_time: 7:00
+      doctor:
+        BLR: 1186492
+        DEL: 759343
+        HYD: 759396
+        MUM: 238349
+        NOA: 759343
+        NRL: 39927
+  monday:
+    shift_1:
+      start_time: 7:00
+      end_time: 16:00
+      doctor:
+        BLR: 1365385
+        DEL: 1327113
+        HYD: 1767249
+        MUM: 238349
+        NOA: 1414615
+        NRL: 349887
+    shift_2:
+      start_time: 16:00
+      end_time: 7:00
+      doctor:
+        BLR: 1186492
+        DEL: 759343
+        HYD: 759396
+        MUM: 238349
+        NOA: 759343
+        NRL: 39927
+  tuesday:
+    shift_1:
+      start_time: 7:00
+      end_time: 16:00
+      doctor:
+        BLR: 1365385
+        DEL: 1327113
+        HYD: 1767249
+        MUM: 238349
+        NOA: 1414615
+        NRL: 349887
+    shift_2:
+      start_time: 16:00
+      end_time: 7:00
+      doctor:
+        BLR: 1186492
+        DEL: 759343
+        HYD: 759396
+        MUM: 238349
+        NOA: 759343
+        NRL: 39927
+  wednesday:
+    shift_1:
+      start_time: 7:00
+      end_time: 16:00
+      doctor:
+        BLR: 1365385
+        DEL: 1327113
+        HYD: 1767249
+        MUM: 238349
+        NOA: 1414615
+        NRL: 349887
+    shift_2:
+      start_time: 16:00
+      end_time: 7:00
+      doctor:
+        BLR: 1186492
+        DEL: 759343
+        HYD: 759396
+        MUM: 238349
+        NOA: 759343
+        NRL: 39927
+  thursday:
+    shift_1:
+      start_time: 7:00
+      end_time: 16:00
+      doctor:
+        BLR: 1365385
+        DEL: 1327113
+        HYD: 1767249
+        MUM: 238349
+        NOA: 1414615
+        NRL: 349887
+    shift_2:
+      start_time: 16:00
+      end_time: 7:00
+      doctor:
+        BLR: 1186492
+        DEL: 759343
+        HYD: 759396
+        MUM: 238349
+        NOA: 759343
+        NRL: 39927
+  friday:
+    shift_1:
+      start_time: 7:00
+      end_time: 16:00
+      doctor:
+        BLR: 1365385
+        DEL: 1327113
+        HYD: 1767249
+        MUM: 238349
+        NOA: 1414615
+        NRL: 349887
+    shift_2:
+      start_time: 16:00
+      end_time: 7:00
+      doctor:
+        BLR: 1186492
+        DEL: 759343
+        HYD: 759396
+        MUM: 238349
+        NOA: 759343
+        NRL: 39927
+  saturday:
+    shift_1:
+      start_time: 7:00
+      end_time: 16:00
+      doctor:
+        BLR: 1365385
+        DEL: 1327113
+        HYD: 1767249
+        MUM: 238349
+        NOA: 1414615
+        NRL: 349887
+    shift_2:
+      start_time: 16:00
+      end_time: 7:00
+      doctor:
+        BLR: 1186492
+        DEL: 759343
+        HYD: 759396
+        MUM: 238349
+        NOA: 759343
+        NRL: 39927
+
+investigation:
+  enable_auto_approval_slack_alerts: true
+  abnormality_whitelisted_master_investigation_ids:
+    - 287
+    - 61
+    - 100
+  delta_check_whitelisted_master_investigation_ids:
+    - 53
+    - 151
+    - 239
+    - 240
+    - 241
+    - 243
+    - 254
+    - 296
+
+superlab:
+  base_url: https://superlab-v2.orangehealth.in
+
+master_tests:
+  covid_rtpcr_ids:
+    - 461
